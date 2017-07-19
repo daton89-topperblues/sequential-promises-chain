@@ -1,0 +1,7 @@
+{
+    "name": "sequential-promises-chain",
+    "dependencies": {},
+    "globalDependencies": {
+        "jest": "registry:dt/jest#19.2.0+20170312200138"
+    }
+}
