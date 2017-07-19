@@ -34,7 +34,7 @@ const fn = (element, index, fnArray) => {
         ...
     })
 }
-//Execute the function on each array element sa a sequential chain
+//Execute the function on each array element as a sequential chain
 
 //Await the result
 try{
