@@ -37,13 +37,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var main_1 = require("../src/main");
-var spc = new main_1.default();
-describe('Ordered promises resolve ', function () {
-    test('resolve', function () { return __awaiter(_this, void 0, void 0, function () {
-        var array, fn, res;
+describe('Async', function () {
+    test('success', function () { return __awaiter(_this, void 0, void 0, function () {
+        var spc, array, fn, res;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    spc = new main_1.default();
                     array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
                     fn = function (element, index, fnArray) {
                         return new Promise(function (resolve, reject) {
@@ -58,6 +58,122 @@ describe('Ordered promises resolve ', function () {
                     res = _a.sent();
                     expect(array).toEqual(res);
                     return [2 /*return*/];
+            }
+        });
+    }); });
+});
+describe('Async with iteratee', function () {
+    test('success', function () { return __awaiter(_this, void 0, void 0, function () {
+        var spc, users, predicate, iteratee, final;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    spc = new main_1.default();
+                    users = [{ name: 'Jonathan' }, { name: 'Toni' }, { name: 'Nicola' }];
+                    predicate = function (user, index) {
+                        return new Promise(function (resolve, reject) {
+                            user.id = index;
+                            setTimeout(function () {
+                                resolve(user);
+                            }, 1000);
+                        });
+                    };
+                    iteratee = function (user) {
+                        return user;
+                    };
+                    return [4 /*yield*/, spc.resolve(users, predicate, iteratee)];
+                case 1:
+                    final = _a.sent();
+                    expect(final.length).toBe(3);
+                    expect(final[0].name).toBe(users[0].name);
+                    expect(final[0].id).toBe(0);
+                    expect(final[1].name).toBe(users[1].name);
+                    expect(final[1].id).toBe(1);
+                    expect(final[2].name).toBe(users[2].name);
+                    expect(final[2].id).toBe(2);
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    test('fail', function () { return __awaiter(_this, void 0, void 0, function () {
+        var spc, users, predicate, iteratee, final, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    spc = new main_1.default();
+                    users = [{ name: 'Jonathan' }, { name: 'Toni' }, { name: 'Nicola' }];
+                    predicate = function (user, index) {
+                        return new Promise(function (resolve, reject) {
+                            user.id = index;
+                            setTimeout(function () {
+                                if (index === 1) {
+                                    var error = new Error('Fake error');
+                                    reject({ index: index, error: error });
+                                }
+                                else {
+                                    resolve(user);
+                                }
+                            }, 1000);
+                        });
+                    };
+                    iteratee = function (user) {
+                        return user;
+                    };
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, spc.resolve(users, predicate, iteratee)];
+                case 2:
+                    final = _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_1 = _a.sent();
+                    expect(error_1.index).toBe(1);
+                    expect(error_1.error.message).toBe('Fake error');
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    }); });
+    test('fail and force continue', function () { return __awaiter(_this, void 0, void 0, function () {
+        var force, spc, users, predicate, iteratee, final, error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    force = true;
+                    spc = new main_1.default(force);
+                    users = [{ name: 'Jonathan' }, { name: 'Toni' }, { name: 'Nicola' }];
+                    predicate = function (user, index) {
+                        return new Promise(function (resolve, reject) {
+                            user.id = index;
+                            setTimeout(function () {
+                                if (index === 1) {
+                                    var error = new Error('Fake error');
+                                    reject({ index: index, error: error });
+                                }
+                                else {
+                                    resolve(user);
+                                }
+                            }, 1000);
+                        });
+                    };
+                    iteratee = function (user) {
+                        return user;
+                    };
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, spc.resolve(users, predicate, iteratee)];
+                case 2:
+                    final = _a.sent();
+                    expect(final.final.length).toBe(2);
+                    expect(final.fail.length).toBe(1);
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_2 = _a.sent();
+                    expect(error_2).toBeUndefined();
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     }); });
