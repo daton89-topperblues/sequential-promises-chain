@@ -1,6 +1,6 @@
 {
   "name": "sequential-promises-chain",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Resolve promises in order",
   "main": "index.js",
   "scripts": {
