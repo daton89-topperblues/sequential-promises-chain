@@ -1,3 +1,9 @@
+[![travis](https://travis-ci.org/daton89-topperblues/sequential-promises-chain.svg?branch=master)](https://www.npmjs.com/package/sequential-promises-chain)
+[![dm](https://img.shields.io/npm/dm/sequential-promises-chain.svg)](https://www.npmjs.com/package/sequential-promises-chain)
+[![version](https://img.shields.io/npm/v/sequential-promises-chain.svg)](https://www.npmjs.com/package/sequential-promises-chain)
+[![GitHub stars](https://img.shields.io/github/stars/daton89-topperblues/sequential-promises-chain.svg?style=social&label=Star)](https://www.github.com/daton89-topperblues/sequential-promises-chain)
+[![GitHub forks](https://img.shields.io/github/forks/daton89-topperblues/sequential-promises-chain.svg?style=social&label=Fork)](https://github.com/daton89-topperblues/sequential-promises-chain)
+<!-- [![sequential-promises-chain](https://raw.githubusercontent.com/daton89-topperblues/sequential-promises-chain/master/docs/img/sequential-promises-chain.png)](https://www.npmjs.com/package/sequential-promises-chain) -->
 # Introduction
 ###### Sequential promises chain
 Often you need to resolve a promises chain in order as a sequential chain.
