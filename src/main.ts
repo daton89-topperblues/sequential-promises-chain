@@ -3,7 +3,7 @@ export default class SequentialPromisesChain {
     /**
      * @param  {boolean} privateforce?
      */
-    constructor(private force?: boolean) {
+    constructor(private options: any = { force: false }) {
 
     }
 
@@ -14,7 +14,7 @@ export default class SequentialPromisesChain {
      *                     The function get as parameters:
      *                     element -  array element in order
      *                     index - the index of the current element
-     * @param  {any} callback?
+     * @param  {any} iteratee? function called for each resolved promise (must return element)
      * @returns Array of ordered promises - The resolve start when this function is called
      */
     public resolve(array: any[], predicate: any, iteratee?: any): any {
@@ -30,7 +30,7 @@ export default class SequentialPromisesChain {
 
             return promise.then((i) => {
 
-                if (this.force) {
+                if (this.options.force) {
 
                     return predicate(element, index)
                         .then(iteratee)
@@ -38,12 +38,12 @@ export default class SequentialPromisesChain {
 
                             final.push(result)
 
-                            return { fail, final }
+                            return { fail, success: final }
                         })
                         .catch((err) => {
                             fail.push(err)
 
-                            return { fail, final }
+                            return { fail, success: final }
                         })
 
                 } else {

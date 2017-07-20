@@ -41,7 +41,7 @@ describe('Async with iteratee', () => {
 
                 setTimeout(() => {
                     resolve(user)
-                }, 1000)
+                }, 100)
 
             })
         }
@@ -81,7 +81,7 @@ describe('Async with iteratee', () => {
                     } else {
                         resolve(user)
                     }
-                }, 1000)
+                }, 100)
 
             })
         }
@@ -105,9 +105,7 @@ describe('Async with iteratee', () => {
 
     test('fail and force continue', async () => {
 
-        const force = true
-
-        const spc = new SequentialPromisesChain(force);
+        const spc = new SequentialPromisesChain({ force: true });
 
         const users = [{ name: 'Jonathan' }, { name: 'Toni' }, { name: 'Nicola' }]
 
@@ -124,7 +122,7 @@ describe('Async with iteratee', () => {
                     } else {
                         resolve(user)
                     }
-                }, 1000)
+                }, 100)
 
             })
         }
@@ -137,7 +135,7 @@ describe('Async with iteratee', () => {
 
             const final = await spc.resolve(users, predicate, iteratee)
 
-            expect(final.final.length).toBe(2)
+            expect(final.success.length).toBe(2)
             expect(final.fail.length).toBe(1)
 
         } catch (error) {

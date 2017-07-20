@@ -31,7 +31,7 @@ Resolve a promises chain:
 //Array of elements on wich the function may be make some operations
 const array = [...]
 //A function that operate on elements and return a promise
-const fn = (element, index, fnArray) => {
+const predicate = (element, index) => {
     return new Promise((resolve, reject) => {
         ...
             return resolve(element)
@@ -40,18 +40,105 @@ const fn = (element, index, fnArray) => {
         ...
     })
 }
-//Execute the function on each array element as a sequential chain
 
-//Await the result
 try{
-    const res = await spc.resolve(array, fn);
+    // Execute the function on each array element as a sequential chain
+    /**
+     * resolve
+     * @param  {any[]} array - Array of elements passed to the function
+     * @param  {any} predicate - Function that return a promise.
+     *                     The function get as parameters:
+     *                     element -  array element in order
+     *                     index - the index of the current element
+     * @param  {any} iteratee? function called for each resolved promise (must return element)
+     * @returns Array of ordered promises - The resolve start when this function is called
+     */
+    const res = await spc.resolve(array, predicate); // return Promise
+    // Await the result
 }catch(err){
     ...
 }
-//Or not
-spc.resolve(array, fn)
-.then(...)
-.catch(...)
+
+```
+
+You can also specify an iteratee function:
+
+```js
+const spc = new SequentialPromisesChain();
+
+const users = [{ name: 'Jonathan' }, { name: 'Toni' }, { name: 'Nicola' }]
+
+const predicate = (user, index) => {
+
+    return new Promise((resolve, reject) => {
+
+        user.id = index
+
+        setTimeout(() => {
+            resolve(user)
+        }, 1000)
+
+    })
+}
+
+const iteratee = (user) => {
+    return user
+}
+
+const final = await spc.resolve(users, predicate, iteratee)
+
+// expect(final.length).toBe(3)
+// expect(final[0].name).toBe(users[0].name)
+// expect(final[0].id).toBe(0)
+// expect(final[1].name).toBe(users[1].name)
+// expect(final[1].id).toBe(1)
+// expect(final[2].name).toBe(users[2].name)
+// expect(final[2].id).toBe(2)
+
+```
+
+By default the Promises chain will stop if an error occur, but you can specify `force: true` to continue exec of Promises even if one fail:
+
+```js
+
+const spc = new SequentialPromisesChain({force: true});
+
+const users = [{ name: 'Jonathan' }, { name: 'Toni' }, { name: 'Nicola' }]
+
+const predicate = (user, index) => {
+
+    return new Promise((resolve, reject) => {
+
+        user.id = index
+
+        setTimeout(() => {
+            if (index === 1) {
+                const error = new Error('Fake error')
+                reject({ index, error })
+            } else {
+                resolve(user)
+            }
+        }, 1000)
+
+    })
+}
+
+const iteratee = (user) => {
+    return user
+}
+
+try {
+
+    const final = await spc.resolve(users, predicate, iteratee)
+
+    // expect(final.success.length).toBe(2)
+    // expect(final.fail.length).toBe(1)
+
+} catch (error) {
+
+    // expect(error).toBeUndefined()
+
+}
 ```
 
 See tests folder for more examples

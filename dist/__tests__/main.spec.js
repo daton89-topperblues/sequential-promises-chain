@@ -75,7 +75,7 @@ describe('Async with iteratee', function () {
                             user.id = index;
                             setTimeout(function () {
                                 resolve(user);
-                            }, 1000);
+                            }, 100);
                         });
                     };
                     iteratee = function (user) {
@@ -113,7 +113,7 @@ describe('Async with iteratee', function () {
                                 else {
                                     resolve(user);
                                 }
-                            }, 1000);
+                            }, 100);
                         });
                     };
                     iteratee = function (user) {
@@ -136,12 +136,11 @@ describe('Async with iteratee', function () {
         });
     }); });
     test('fail and force continue', function () { return __awaiter(_this, void 0, void 0, function () {
-        var force, spc, users, predicate, iteratee, final, error_2;
+        var spc, users, predicate, iteratee, final, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    force = true;
-                    spc = new main_1.default(force);
+                    spc = new main_1.default({ force: true });
                     users = [{ name: 'Jonathan' }, { name: 'Toni' }, { name: 'Nicola' }];
                     predicate = function (user, index) {
                         return new Promise(function (resolve, reject) {
@@ -154,7 +153,7 @@ describe('Async with iteratee', function () {
                                 else {
                                     resolve(user);
                                 }
-                            }, 1000);
+                            }, 100);
                         });
                     };
                     iteratee = function (user) {
@@ -166,7 +165,7 @@ describe('Async with iteratee', function () {
                     return [4 /*yield*/, spc.resolve(users, predicate, iteratee)];
                 case 2:
                     final = _a.sent();
-                    expect(final.final.length).toBe(2);
+                    expect(final.success.length).toBe(2);
                     expect(final.fail.length).toBe(1);
                     return [3 /*break*/, 4];
                 case 3:
